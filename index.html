@@ -185,7 +185,7 @@ details.sec[open]>summary{margin-bottom:16px}
   <ol class="steps">
     <li><b>Apăsați „Pornește”.</b> Vedeți ce se întâmplă dacă țara produce ca astăzi: zăcămintele se golesc, culorile fosile scad, importul crește.</li>
     <li><b>Mutați sliderele din stânga.</b> Mai multă extracție golește zăcămintele mai repede. Mai multe regenerabile reduc importul.</li>
-    <li><b>Misiunea:</b> fără import în 2050, adică zona gri să dispară. Rezultatul apare în caseta „Ținta 2050”.</li>
+    <li><b>Misiunea:</b> cel puțin 90 % din consum acoperit din producția internă în 2050, cu un scenariu credibil tehnic. Rezultatul apare în caseta „Ținta 2050”.</li>
   </ol>
 </header>
 
@@ -195,7 +195,7 @@ details.sec[open]>summary{margin-bottom:16px}
       <h3>Țara</h3>
       <label>Punctul de pornire
         <select id="preset">
-          <option value="ro">România (date 2023)</option>
+          <option value="ro">România (date 2025)</option>
           <option value="a">Țara A – bogată în hidrocarburi</option>
           <option value="b">Țara B – săracă în resurse</option>
         </select>
@@ -230,7 +230,9 @@ details.sec[open]>summary{margin-bottom:16px}
         <div class="ctl"><div class="ctl-h"><label for="N">Ani până la ținta regenerabilă</label><output id="o-N"></output></div><input type="range" id="N" min="1" max="40" step="1"></div>
         <div class="ctl"><div class="ctl-h"><label for="H">Orizont de simulare</label><output id="o-H"></output></div><input type="range" id="H" min="2050" max="2100" step="5"></div>
         <label class="check"><input type="checkbox" id="eurostat"> <span>Convenția Eurostat: energia nucleară se contabilizează ca producție internă și cu uraniu importat</span></label>
-        <label>Factor de emisie al importului [t CO₂/tep]<input type="number" id="impEF" min="0" max="5" step="0.05"></label>
+        <label>Factor de emisie al importului fosil [t CO₂/tep]<input type="number" id="impEF" min="0" max="5" step="0.05"></label>
+        <div class="row2"><label>Import: combustibili fosili [%]<input type="number" id="impFosP" min="0" max="100" step="1"></label><label>Import: electricitate [%]<input type="number" id="impElP" min="0" max="100" step="1"></label></div>
+        <p class="note">Restul importului este biomasă. Emisiile se calculează doar pentru componenta fosilă; electricitatea importată se raportează în țara producătoare (principiul teritorial IPCC).</p>
       </div>
     </details>
   </aside>
@@ -259,13 +261,15 @@ details.sec[open]>summary{margin-bottom:16px}
       <div class="legend" id="mlegend"></div>
       <details class="note-d"><summary>Cum se face verificarea (ipoteze)</summary>
         <ul class="ipoteze">
-          <li><b>Cererea de electricitate</b> pornește de la 55,4 TWh (consum final 50,5 TWh + consum în rețele 4,9 TWh, 2024) și crește cu energia fosilă scoasă din mix față de anul de bază, împărțită la un factor de substituție de 2. Un sfert din această cerere nouă este încălzire, cu profil de iarnă. Factorul reflectă că 1 MWh electric înlocuiește circa 3 MWh de combustibil în pompe de căldură și vehicule electrice, circa 2,5 MWh în centrale termice și doar circa 0,65 MWh prin hidrogen.</li>
+          <li><b>Cererea de electricitate</b> pornește de la 55,1 TWh (consum final 50,0 TWh + consum în rețele ≈ 5,1 TWh, 2025) și crește cu energia fosilă scoasă din mix față de anul de bază, împărțită la un factor de substituție de 2. Un sfert din această cerere nouă este încălzire, cu profil de iarnă. Factorul reflectă că 1 MWh electric înlocuiește circa 3 MWh de combustibil în pompe de căldură și vehicule electrice, circa 2,5 MWh în centrale termice și doar circa 0,65 MWh prin hidrogen.</li>
           <li><b>Puterea instalată</b> = energie / (8 760 h × factor de capacitate). Factorii folosiți: hidro 0,30, eolian terestru 0,26, eolian offshore 0,40 (valoare tipică de literatură), fotovoltaic 0,14, nuclear 0,88. Primii doi și ultimul sunt calibrați pe producția din 2023–2024.</li>
           <li><b>Ritmul de construcție</b> se compară cu cel mai mare ritm anual observat, ≈1,7 GW/an (fotovoltaic, 2024).</li>
           <li><b>Bateriile</b> trebuie să mute seara circa 40 % din producția fotovoltaică zilnică din iulie (regulă empirică). Comparația se face cu ≈2 GWh instalați în august 2026.</li>
-          <li><b>Stocarea sezonieră</b> se calculează lunar, cu profiluri tipice orientative pentru soare, vânt, hidraulicitate și încălzire. Deficitele de iarnă se acoperă, în ordine: din centralele termice rămase, din lacurile hidro (ipoteză: maximum 2 TWh mutați sezonier) și apoi din hidrogen produs din surplusul de vară. Randamente: electroliză 70 %, reconversie 55 %, deci circa 38 % pe ciclu. Hidrogenul se exprimă la 3,0 kWh/Nm³ (PCI).</li>
+          <li><b>Centralele termice</b> sunt limitate de putere, nu de o cantitate anuală de energie: ≈ 4,6 GW în anul de bază (cărbune ≈ 1,6 GW, gaze ≈ 3 GW, estimare), disponibile 85 % din timp. Puterea termică se retrage proporțional cu combustibilul fosil rămas în scenariu (intern și importat).</li>
+          <li><b>Stocarea sezonieră</b> se calculează lunar, cu profiluri tipice orientative pentru soare, vânt, hidraulicitate și încălzire. Deficitele se acoperă, în ordine: din centralele termice, în limita puterii lor lunare; din lacurile hidro (ipoteză: maximum 2 TWh mutați sezonier); din hidrogen produs din surplusul de vară. Ce rămâne este import de electricitate. Randamente: electroliză 70 %, reconversie 55 %, deci circa 38 % pe ciclu. Hidrogenul se exprimă la 3,0 kWh/Nm³ (PCI).</li>
           <li><b>Rețeaua</b> se apreciază prin puterea eoliană și solară instalată față de nivelul din anul de bază (2023).</li>
-          <li><b>Puterea fermă</b> = 0,9 × nuclear + 0,6 × hidro + termo rămas (factor de utilizare 45 %), comparată cu vârful de iarnă. Vârful este azi ≈9–9,5 GW și crește cu electrificarea încălzirii. Indicatorul surprinde perioadele de mai multe zile fără vânt și soare, pe care bilanțul lunar nu le vede.</li>
+          <li><b>Puterea fermă</b> = 0,9 × nuclear + 0,6 × hidro (≈ 6,4 GW instalați, plus capacitățile noi) + 0,9 × termo disponibil, comparată cu vârful de iarnă. Verde înseamnă o rezervă de cel puțin 10 % peste vârf. Vârful este azi ≈ 9–9,5 GW și crește cu electrificarea încălzirii. Indicatorul surprinde perioadele de mai multe zile fără vânt și soare, pe care bilanțul lunar nu le vede.</li>
+          <li><b>Importul</b> din anul de bază este împărțit în combustibili fosili (89 %), electricitate (9 %) și biomasă (2 %), ponderi editabile în setările avansate. Cantitatea de electricitate și biomasă importată rămâne cea din anul de bază (scalată cu consumul); orice import suplimentar, apărut când scade producția internă, este combustibil fosil. Emisiile se calculează doar pentru componenta fosilă.</li>
           <li><b>Pragurile semaforului</b> sunt praguri didactice, gândite pentru discuție la seminar, nu criterii normative.</li>
         </ul>
       </details>
@@ -405,7 +409,7 @@ details.sec[open]>summary{margin-bottom:16px}
 
   <div class="foot">
     <p><b>Ipotezele modelului.</b> Bilanț anual pe bază de energie primară, fără pierderi de transformare, fără stocare și fără constrângeri de echilibrare pentru sursele variabile. Extracția dintr-un zăcământ este limitată la Rezerve / (R/P minim), ceea ce produce declinul exponențial de la finalul exploatării. În fiecare an, fracția setată din resursele rămase trece în rezerve. Regenerabilele cresc liniar de la nivelul actual la țintă, plafonate de potențialul tehnic. Emisiile sunt teritoriale: combustibilii fosili consumați în țară plus importul, cu factorul de emisie ales.</p>
-    <p><b>Date.</b> Presetul România folosește balanța INS pentru 2023. Componentele marcate în panou drept „ipoteză didactică” nu au o sursă oficială recentă și trebuie tratate ca atare. Rezervele de hidrocarburi provin din ultima ediție BP care a publicat rezerve (date la sfârșitul anului 2020); de atunci, Energy Institute nu mai publică această serie. Țările A și B sunt ipotetice.</p>
+    <p><b>Date.</b> Presetul România folosește producția de electricitate din 2025 (hidro, eolian, solar, nuclear) și balanța INS pe 2023 pentru combustibili, biomasă și consumul intern brut, ultima balanță anuală cu defalcare completă. 2025 a fost un an secetos, cu producție hidro sub medie. Componentele marcate în panou drept „ipoteză didactică” nu au o sursă oficială recentă și trebuie tratate ca atare. Rezervele de hidrocarburi provin din ultima ediție BP care a publicat rezerve (date la sfârșitul anului 2020); de atunci, Energy Institute nu mai publică această serie. Țările A și B sunt ipotetice.</p>
     <p><b>Bibliografie</b></p>
     <ol class="bib">
       <li>INS, <i>Energia în anul 2023</i>, comunicat de presă: CIB 30 351 mii tep, producție primară 21 918 mii tep. <a href="https://insse.ro/cms/sites/default/files/com_presa/com_pdf/energie_2023r.pdf">insse.ro</a></li>
@@ -448,22 +452,22 @@ const NOTES={
   coal:'Producție 2023: 2 245 mii tep [1]. Rezerve dovedite 291 Mt, majoritar lignit, ≈0,18 tep/t [3]. Resursele suplimentare sunt o ipoteză didactică.',
   oil:'Producție 2023: 2 908 mii tep [1]. Rezerve dovedite ≈0,6 mld. bbl ≈ 82 Mt (date la sfârșitul anului 2020) [3]. Resursele suplimentare sunt o ipoteză didactică.',
   gas:'Producție 2023: 7 652 mii tep [1]. Rezerve dovedite ≈100 mld. m³ la sfârșitul anului 2020 [3], 1 mld. m³ ≈ 0,82 Mtep. Resurse: Neptun Deep ≈100 mld. m³ [4].',
-  nuc:'Energie primară ≈121 PJ ≈ 2,89 Mtep [2]. Extracția indigenă a încetat în 2021 (Crucea) [5], deci rezervele active sunt zero. Resursele sunt o ipoteză didactică, fiindcă nu există cifre oficiale publicate. 1 t U natural în CANDU ≈ 0,0155 Mtep.',
-  hyd:'Producție 2023: 18,1 TWh [2]. Potențial tehnic ≈40 TWh [6]. 1 TWh = 0,086 Mtep.',
-  wind:'Producție 2023: 7,5 TWh [2]. Potențial estimat ≈23 TWh (ICEMENERG 2007) [6]; estimare veche, potențialul tehnic actual este mai mare.',
+  nuc:'Producție 2025: 11,24 TWh electrici → 11,24 / 0,33 × 0,086 ≈ 2,93 Mtep. Extracția indigenă a încetat în 2021 (Crucea) [5], deci rezervele active sunt zero. Resursele sunt o ipoteză didactică, fiindcă nu există cifre oficiale publicate. 1 t U natural în CANDU ≈ 0,0155 Mtep.',
+  hyd:'Producție 2025: 12,9 TWh, an secetos (18,1 TWh în 2023) [2]. Putere instalată ≈ 6,4 GW. Potențial tehnic ≈40 TWh [6]. 1 TWh = 0,086 Mtep.',
+  wind:'Producție 2025: 6,5 TWh (7,5 TWh în 2023) [2]. Potențial estimat ≈23 TWh (ICEMENERG 2007) [6]; estimare veche, potențialul tehnic actual este mai mare.',
   woff:'Potențial tehnic 76 GW (22 GW fundații fixe, 54 GW flotant) [7]. Energia, ≈220 TWh/an ≈ 18,9 Mtep, este calculată aici cu un factor de capacitate presupus de 33 %.',
-  sol:'Producție 2023: 2,2 TWh [2]. Potențialul de 6 Mtep (~70 TWh) este o ipoteză didactică, fiindcă nu există o estimare oficială recentă.',
-  bio:'Potențial 318 PJ ≈ 7,6 Mtep [6]. Nivelul actual (≈3,7 Mtep, include lemnul de foc) este calculat ca rest din balanța INS [1].',
+  sol:'Producție 2025: 3,3 TWh (2,2 TWh în 2023) [2]. Potențialul de 6 Mtep (~70 TWh) este o ipoteză didactică, fiindcă nu există o estimare oficială recentă.',
+  bio:'Potențial 318 PJ ≈ 7,6 Mtep [6]. Nivelul actual (≈3,75 Mtep, include lemnul de foc) este calculat ca rest din balanța INS 2023 [1].',
   geo:'Potențial 7 PJ ≈ 0,17 Mtep [6]. Nivelul actual este o valoare aproximativă. Utilizare preponderent termică.'
 };
 const PRESETS={
-  ro:{D0:30.35,g:0,k:2,tau:8,H:2075,N:15,eurostat:true,impEF:2.6,src:{
-    coal:{R:50,S:200,P:2.25},oil:{R:82,S:60,P:2.91},gas:{R:82,S:82,P:7.65},nuc:{R:0,S:30,P:2.89},
-    hyd:{E:1.56,T:1.56,pot:3.44},wind:{E:0.65,T:0.65,pot:1.98},woff:{E:0,T:0,pot:18.9},sol:{E:0.19,T:0.19,pot:6},bio:{E:3.7,T:3.7,pot:7.6},geo:{E:0.03,T:0.03,pot:0.17}}},
-  a:{D0:60,g:1,k:1.5,tau:10,H:2100,N:20,eurostat:true,impEF:2.6,src:{
+  ro:{D0:30.35,g:0,k:2,tau:8,H:2075,N:15,eurostat:true,impEF:2.6,impFos:0.89,impEl:0.09,src:{
+    coal:{R:50,S:200,P:2.25},oil:{R:82,S:60,P:2.91},gas:{R:82,S:82,P:7.65},nuc:{R:0,S:30,P:2.93},
+    hyd:{E:1.107,T:1.107,pot:3.44},wind:{E:0.560,T:0.560,pot:1.98},woff:{E:0,T:0,pot:18.9},sol:{E:0.283,T:0.283,pot:6},bio:{E:3.75,T:3.75,pot:7.6},geo:{E:0.03,T:0.03,pot:0.17}}},
+  a:{D0:60,g:1,k:1.5,tau:10,H:2100,N:20,eurostat:true,impEF:2.6,impFos:0.89,impEl:0.09,src:{
     coal:{R:300,S:800,P:10},oil:{R:1500,S:1000,P:30},gas:{R:1200,S:1500,P:25},nuc:{R:0,S:0,P:0},
     hyd:{E:2,T:2,pot:4},wind:{E:0.5,T:0.5,pot:10},woff:{E:0,T:0,pot:5},sol:{E:0.5,T:0.5,pot:20},bio:{E:1,T:1,pot:3},geo:{E:0,T:0,pot:0.5}}},
-  b:{D0:20,g:0.5,k:1,tau:8,H:2075,N:15,eurostat:true,impEF:2.6,src:{
+  b:{D0:20,g:0.5,k:1,tau:8,H:2075,N:15,eurostat:true,impEF:2.6,impFos:0.89,impEl:0.09,src:{
     coal:{R:5,S:20,P:0.5},oil:{R:2,S:5,P:0.3},gas:{R:10,S:20,P:1.5},nuc:{R:0,S:0,P:3},
     hyd:{E:0.5,T:0.5,pot:0.8},wind:{E:0.8,T:0.8,pot:5},woff:{E:0,T:0,pot:0},sol:{E:0.6,T:0.6,pot:6},bio:{E:1.5,T:1.5,pot:3},geo:{E:0.1,T:0.1,pot:0.6}}}
 };
@@ -478,7 +482,7 @@ function niceMax(v){if(v<=0)return 1;const m=Math.pow(10,Math.floor(Math.log10(v
 
 function buildControls(){
   $('D0').value=st.D0;$('g').value=st.g;$('k').value=st.k;$('tau').value=st.tau;$('N').value=st.N;$('H').value=st.H;
-  $('eurostat').checked=st.eurostat;$('impEF').value=st.impEF;
+  $('eurostat').checked=st.eurostat;$('impEF').value=st.impEF;$('impFosP').value=Math.round(st.impFos*100);$('impElP').value=Math.round(st.impEl*100);
   let sh='',fh='';
   SRC.forEach(s=>{
     const d=st.src[s.id];
@@ -509,6 +513,12 @@ function outputs(){
   });
 }
 
+function nonFossImp(D,imp){
+  const B=PRESETS[curKey],bs=B.src;
+  const bProd=bs.coal.P+bs.oil.P+bs.gas.P+bs.nuc.P+['hyd','wind','woff','sol','bio','geo'].reduce((a,k)=>a+bs[k].E,0);
+  const bImp=Math.max(0,B.D0-bProd)*(st.D0/B.D0)*(D/st.D0);
+  return Math.min(imp,bImp*(1-st.impFos));
+}
 function simulate(){
   const n=st.H-Y0;const out=[];
   const R={},S={};SRC.forEach(s=>{if(s.kind==='stock'){R[s.id]=st.src[s.id].R;S[s.id]=st.src[s.id].S}});
@@ -532,7 +542,7 @@ function simulate(){
     });
     row.sup=sup;row.imp=Math.max(0,D-sup);row.exp=Math.max(0,sup-D);
     row.ind=D>0?sup/D:0;
-    row.em=fossil*(sup>D&&sup>0?D/sup:1)+row.imp*st.impEF;
+    row.em=fossil*(sup>D&&sup>0?D/sup:1)+(row.imp-nonFossImp(D,row.imp))*st.impEF;
     out.push(row);
   }
   return out;
@@ -555,12 +565,13 @@ function kpis(r){
   const indSub=r.ind>=1?'excedent, export '+fvShort(r.exp):'dependență '+nf((1-r.ind)*100,0)+' %';
   const cum=sim.slice(0,sim.indexOf(r)+1).reduce((a,x)=>a+x.em,0);
   const g=sim.find(x=>x.y===2050);
-  const gTxt=g?(g.ind>=0.999?'✓ atinsă':nf(Math.min(g.ind,1)*100,0)+' %'):'–';
-  const gSub=g?(g.ind>=0.999?'fără import în 2050':'mai trebuie '+fvShort(g.imp)+' '+UNITS[unit].l+'/an'):'';
+  const gOk=g&&g.ind>=0.9;
+  const gTxt=g?(gOk?'✓ ':'')+nf(Math.min(g.ind,1)*100,0)+' %':'–';
+  const gSub=g?(gOk?'ținta temei este atinsă'+(g.imp>0?'; import '+fvShort(g.imp)+' '+UNITS[unit].l+'/an':''):'sub 90 %; import '+fvShort(g.imp)+' '+UNITS[unit].l+'/an'):'';
   const k=[
     ['ind','Independență în '+r.y,indTxt,indSub],
     ['',r.exp>0?'Export net':'Import',fvShort(r.exp>0?r.exp:r.imp),UNITS[unit].l+'/an din '+fvShort(r.D)+' consum'],
-    ['goal '+(g&&g.ind>=0.999?'ok':'no'),'Ținta 2050',gTxt,gSub],
+    ['goal '+(gOk?'ok':'no'),'Ținta 2050: ≥ 90 % intern',gTxt,gSub],
     ['','Emisii CO₂',nf(r.em,1),'Mt/an · cumulat '+nf(cum,0)+' Mt']
   ];
   $('kpis').innerHTML=k.map(x=>`<div class="kpi ${x[0]}"><span class="k">${x[1]}</span><span class="v">${x[2]}</span><span class="s">${x[3]}</span></div>`).join('');
@@ -656,7 +667,7 @@ function insights(){
   $('insights').innerHTML=L.map(x=>`<li>${x}</li>`).join('');
 }
 
-const FX={EL0:55.4,Fe0:17.5,Ffin0:270.6,elFin0:50.5,peak0:9.5,FP:0.77,sub:2.0,rec:1.7,bat0:2.0,Hflex:2.0,etaE:0.70,etaR:0.55,
+const FX={EL0:55.1,Ffin0:270.6,elFin0:50.0,peak0:9.5,FP:0.77,sub:2.0,rec:1.7,bat0:2.0,Hflex:2.0,etaE:0.70,etaR:0.55,thGW0:4.6,thAv:0.85,hydGW0:6.4,
   cf:{hyd:0.30,wind:0.26,woff:0.40,sol:0.14,nuc:0.88}};
 const PROF=(()=>{const n=a=>{const t=a.reduce((x,y)=>x+y,0);return a.map(v=>v/t)};return{
   sol:n([2.5,4,7.5,10,12,13,14,12.5,9.5,7,4,2.5]),wind:n([10,9.5,10,9,7.5,7,7.5,7,7,8,8.5,9]),
@@ -667,19 +678,20 @@ const LUNI=['Ian','Feb','Mar','Apr','Mai','Iun','Iul','Aug','Sep','Oct','Noi','D
 const TW=11.63, ELK=['nuc','hyd','wind','woff','sol'];
 function feas(i){
   const r=sim[i],r0=sim[0],t=r.y-Y0,sc=r.D/r0.D;
-  const fos=x=>x.p.coal+x.p.oil+x.p.gas+x.imp;
+  const fos=x=>x.p.coal+x.p.oil+x.p.gas+x.imp-nonFossImp(x.D,x.imp);
   const B=PRESETS[curKey],kR=st.D0/PRESETS.ro.D0,kB=st.D0/B.D0,bs=B.src;
   const bProd=bs.coal.P+bs.oil.P+bs.gas.P+bs.nuc.P+['hyd','wind','woff','sol','bio','geo'].reduce((a,k)=>a+bs[k].E,0);
-  const F0=(bs.coal.P+bs.oil.P+bs.gas.P+Math.max(0,B.D0-bProd))*kB*sc,Ft=fos(r),dF=Math.max(0,F0-Ft);
+  const F0=(bs.coal.P+bs.oil.P+bs.gas.P+Math.max(0,B.D0-bProd)*st.impFos)*kB*sc,Ft=fos(r),dF=Math.max(0,F0-Ft);
   const el={nuc:r.p.nuc*TW*0.33,hyd:r.p.hyd*TW,wind:r.p.wind*TW,woff:r.p.woff*TW,sol:r.p.sol*TW};
   const el0={nuc:bs.nuc.P*TW*0.33*kB,hyd:bs.hyd.E*TW*kB,wind:bs.wind.E*TW*kB,woff:bs.woff.E*TW*kB,sol:bs.sol.E*TW*kB};
   const G=ELK.reduce((a,k)=>a+el[k],0);
   const base=FX.EL0*kR*sc,dE=dF*TW/FX.sub,ELt=base+dE;
-  const Fe=F0>0?FX.Fe0*kR*sc*Math.min(1,Ft/F0):0;
+  const thGW=F0>0?FX.thGW0*kR*sc*Math.min(1,Ft/F0):0, thCap=thGW*730*FX.thAv/1000;
   const GW={},GW0={};let newGW=0;
-  ELK.forEach(k=>{GW[k]=el[k]/(FX.cf[k]*8.76);GW0[k]=el0[k]/(FX.cf[k]*8.76);newGW+=Math.max(0,GW[k]-GW0[k])});
+  ELK.forEach(k=>{GW[k]=el[k]/(FX.cf[k]*8.76);GW0[k]=el0[k]/(FX.cf[k]*8.76);});
+  GW0.hyd=FX.hydGW0*kR; GW.hyd=GW0.hyd+Math.max(0,el.hyd-el0.hyd)/(FX.cf.hyd*8.76);
+  ELK.forEach(k=>{newGW+=Math.max(0,GW[k]-GW0[k])});
   const rate=t>0?newGW/t:0;
-  const vre=(el.wind+el.woff+el.sol)/Math.max(1e-9,G+Fe);
   const Ebat=0.4*el.sol*PROF.sol[6]/31*1000;
   const dem=[],cl=[],res=[];let Dsum=0,Ssum=0,nS=0;
   for(let m=0;m<12;m++){
@@ -687,7 +699,9 @@ function feas(i){
     cl[m]=el.nuc/12+el.hyd*PROF.hyd[m]+el.wind*PROF.wind[m]+el.woff*PROF.woff[m]+el.sol*PROF.sol[m];
     res[m]=dem[m]-cl[m];if(res[m]>0)Dsum+=res[m];else{Ssum-=res[m];nS++}
   }
-  const fm=res.map(v=>Dsum>0?Math.min(1,Fe/Dsum)*Math.max(0,v):0);
+  const fm=res.map(v=>Math.min(Math.max(0,v),thCap));
+  const Fe=fm.reduce((a,b)=>a+b,0);
+  const vre=(el.wind+el.woff+el.sol)/Math.max(1e-9,G+Fe);
   const Drem=Math.max(0,Dsum-Fe),Hf=Math.min(FX.Hflex,el.hyd*0.15),Drem2=Math.max(0,Drem-Hf);
   const rt=FX.etaE*FX.etaR;let elH2=Drem2/rt,unmet=0;
   if(elH2>Ssum){unmet=Drem2-Ssum*rt;elH2=Ssum}
@@ -695,7 +709,7 @@ function feas(i){
   const curt=Math.max(0,Ssum-elH2);
   const vGW=GW.wind+GW.woff+GW.sol,vGW0=Math.max(0.1,GW0.wind+GW0.woff+GW0.sol);
   const Pk=FX.peak0*kR*sc+dE*0.25*PROF.heat[0]*1000/744*1.5+dE*0.75/8760*1000*1.2;
-  const thGW=Fe/(8.76*0.45),firm=0.9*GW.nuc+0.6*GW.hyd+thGW;
+  const firm=0.9*GW.nuc+0.6*GW.hyd+0.9*thGW;
   const elFin=ELt*FX.elFin0/FX.EL0,nonel=Math.max(0,(FX.Ffin0-FX.elFin0)*kR*sc-dF*TW*FX.FP),share=elFin/(elFin+nonel);
   return {r,t,G,ELt,Fe,dE,GW,newGW,rate,vre,Ebat,dem,cl,fm,Dsum,Ssum,Drem,Hf,Drem2,unmet,H2,nm3,ely,curt,vGW,vGW0,Pk,share,el,firm,thGW,kR};
 }
@@ -707,11 +721,11 @@ function feasRender(i){
   I.push(['Ritm de construcție',f.t>0?nf(f.rate,1)+' GW/an':'–',
     f.t>0?nf(f.newGW,0)+' GW noi până în '+f.r.y+'; cel mai rapid ritm de până acum ≈ 1,7 GW/an':'anul de bază',f.t>0?s3(f.rate/(FX.rec*f.kR),1,2.5):0]);
   const fr=f.firm/f.Pk;
-  I.push(['Putere fermă la vârful de iarnă',nf(f.firm,1)+' / '+nf(f.Pk,1)+' GW',fr>=1?'nuclear, hidro și termo acoperă vârful și în zilele fără vânt și soare':'lipsesc ≈ '+nf(f.Pk-f.firm,1)+' GW pentru zilele fără vânt și soare: turbine pe hidrogen, stocare de lungă durată, interconexiuni sau reducerea vârfului',fr>=1?0:(fr>=0.75?1:2)]);
+  I.push(['Putere fermă la vârful de iarnă',nf(f.firm,1)+' / '+nf(f.Pk,1)+' GW',fr>=1.1?'nuclear, hidro și termo acoperă vârful cu o rezervă de cel puțin 10 %':(fr>=1?'vârful este acoperit, dar rezerva este sub 10 %; în serile reci este nevoie de import':'lipsesc ≈ '+nf(f.Pk-f.firm,1)+' GW în zilele fără vânt și soare: import, turbine pe hidrogen, stocare de lungă durată sau reducerea vârfului'),fr>=1.1?0:(fr>=0.85?1:2)]);
   I.push(['Baterii, stocare zilnică',nf(f.Ebat,0)+' GWh','pentru mutarea producției solare seara; instalat azi ≈ 2 GWh',s3(f.Ebat/(FX.bat0*f.kR),5,25)]);
   let sv,sx,ss;
-  if(f.unmet>0){sv='lipsă '+nf(f.unmet,1)+' TWh';sx='iarna nu ajunge nici surplusul de vară transformat în hidrogen';ss=2}
-  else if(f.Drem2<=0){sv=f.Dsum<=0?'nu e necesară':(f.Drem<=0?'acoperită termo':'acoperită hidro');sx=f.Drem<=0?'deficitele de iarnă se acoperă din centralele termice rămase':'lacurile de acumulare mută energia din primăvară în iarnă';ss=0}
+  if(f.unmet>0.05){sv='import el. '+nf(f.unmet,1)+' TWh';sx='iarna nu ajung nici centralele termice, nici surplusul de vară transformat în hidrogen; diferența vine din import de electricitate';ss=f.unmet>0.05*f.ELt?2:1}
+  else if(f.Drem2<=0.05){sv=f.Dsum<=0?'nu e necesară':(f.Drem<=0?'acoperită termo':'acoperită hidro');sx=f.Drem<=0?'deficitele de iarnă se acoperă din centralele termice rămase':'lacurile de acumulare mută energia din primăvară în iarnă';ss=0}
   else{sv=nf(f.H2,1)+' TWh H₂';sx='≈ '+nf(f.nm3,1)+' mld. Nm³ H₂ (depozitele de gaze au ≈ 3,1 mld. m³); electrolizoare ≈ '+nf(f.ely,1)+' GW';ss=f.H2>10?2:1}
   I.push(['Stocare sezonieră',sv,sx,ss]);
   const gr=f.vGW/f.vGW0;
@@ -723,8 +737,8 @@ function feasRender(i){
   $('verdict').className='verdict s'+vs;$('verdict').textContent=vt;
   $('feasTitle').textContent='Este credibil scenariul în '+f.r.y+'?';
   const bal=f.G+f.Fe-f.ELt;
-  $('feasLead').textContent='Electricitate fără emisii: '+nf(f.G,0)+' TWh, din care '+pc(f.vre*(f.G+f.Fe)/Math.max(1e-9,f.G))+' eolian și solar; termo rămas: '+nf(f.Fe,0)+' TWh; cerere de electricitate: '+nf(f.ELt,0)+' TWh. '+(curKey!=='ro'?'Pentru țările ipotetice, datele sistemului electric sunt scalate după România. ':'')+
-    (bal>=0?'Anual rămâne un excedent de '+nf(bal,0)+' TWh, care trebuie exportat, stocat sau limitat. ':'Anual lipsesc '+nf(-bal,0)+' TWh, care trebuie importați. ')+
+  $('feasLead').textContent='Electricitate fără emisii: '+nf(f.G,0)+' TWh, din care '+pc(f.vre*(f.G+f.Fe)/Math.max(1e-9,f.G))+' eolian și solar; centrale termice: '+nf(f.Fe,0)+' TWh (putere disponibilă ≈ '+nf(f.thGW,1)+' GW); cerere de electricitate: '+nf(f.ELt,0)+' TWh. '+(curKey!=='ro'?'Pentru țările ipotetice, datele sistemului electric sunt scalate după România. ':'')+
+    (bal>=0?'Anual rămâne un excedent de '+nf(bal,0)+' TWh, care trebuie exportat, stocat sau limitat. ':'Anual lipsesc '+nf(-bal,0)+' TWh, acoperiți din stocare sau din import de electricitate. ')+
     (f.curt>1?'Excedentul de vară nefolosit este de '+nf(f.curt,0)+' TWh.':'');
   $('feas').innerHTML=I.map(x=>`<div class="ind"><div class="ind-h"><span>${x[0]}</span><span class="ind-s s${x[3]}">${SL[x[3]]}</span></div><span class="v">${x[1]}</span><span class="x">${x[2]}</span></div>`).join('');
   mchart(f);
@@ -755,7 +769,7 @@ function mchart(f){
 function mlegend(){
   const nm={nuc:'Nuclear',hyd:'Hidro',wind:'Eolian terestru',woff:'Eolian offshore',sol:'Solar'};
   $('mlegend').innerHTML=ELK.map(k=>`<span><i style="background:var(--c-${k})"></i>${nm[k]}</span>`).join('')+
-   '<span><i style="background:repeating-linear-gradient(45deg,var(--c-coal) 0 2px,transparent 2px 5px);border:1px solid var(--c-coal)"></i>termo / import, flexibil</span><span><i style="border:1.5px dashed var(--bad)"></i>deficit: stocare sau lipsă</span><span><i class="ln"></i>cerere de electricitate</span>';
+   '<span><i style="background:repeating-linear-gradient(45deg,var(--c-coal) 0 2px,transparent 2px 5px);border:1px solid var(--c-coal)"></i>centrale termice (combustibil intern sau importat)</span><span><i style="border:1.5px dashed var(--bad)"></i>deficit: import de electricitate, stocare sau lipsă</span><span><i class="ln"></i>cerere de electricitate</span>';
 }
 function legend(){
   let h=SRC.map(s=>`<span><i style="background:var(--c-${s.id})"></i>${s.name}</span>`).join('');
@@ -769,6 +783,7 @@ $('controls').addEventListener('input',e=>{
   const id=e.target.id;if(!id)return;const v=parseFloat(e.target.value);
   if(id==='preset'||id==='unit')return;
   if(['D0','g','k','tau','N','H','impEF'].includes(id)){if(!isNaN(v))st[id]=v;}
+  else if(id==='impFosP'||id==='impElP'){if(!isNaN(v)){const x=Math.max(0,Math.min(100,v))/100;if(id==='impFosP'){st.impFos=x;st.impEl=Math.min(st.impEl,1-x)}else{st.impEl=x;st.impFos=Math.min(st.impFos,1-x)}$('impFosP').value=Math.round(st.impFos*100);$('impElP').value=Math.round(st.impEl*100);}}
   else if(id==='eurostat')st.eurostat=e.target.checked;
   else{const [p,s]=id.split('-');const d=st.src[s];if(!d||isNaN(v))return;
     if(p==='P')d.P=v;
